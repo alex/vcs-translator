@@ -30,6 +30,15 @@ class GitTranslator(BaseTranslator):
             return Push()
         elif parts == ["diff"]:
             return Diff()
+        elif parts[0] == "remote":
+            parts = parts[1:]
+            if parts == ["-v"]:
+                verbose = True
+            elif not parts:
+                verbose = False
+            else:
+                return
+            return Remote(verbose=verbose)
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -61,6 +70,12 @@ class GitTranslator(BaseTranslator):
     def translate_diff(self, command):
         return "git diff"
 
+    def translate_remote(self, command):
+        cmd = "git remote"
+        if command.verbose:
+            cmd += " -v"
+        return cmd
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -72,6 +87,8 @@ class HgTranslator(BaseTranslator):
             return Push()
         elif parts == ["diff"]:
             return Diff()
+        elif parts == ["paths"]:
+            return Remote(verbose=True)
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -102,6 +119,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_revert(self, command):
         return "hg revert %s --no-backup" % " ".join(f.path for f in command.files)
+
+    def translate_remote(self, command):
+        return "hg paths"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -234,3 +254,7 @@ class Diff(Command):
 class Revert(Command):
     def __init__(self, files):
         self.files = files
+
+class Remote(Command):
+    def __init__(self, verbose):
+        self.verbose = verbose

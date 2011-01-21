@@ -63,6 +63,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "commit", "git commit -a")
         self.assert_translates(t, "push", "git push")
         self.assert_translates(t, "diff", "git diff")
+        self.assert_translates(t, "paths", "git remote -v")
 
     def test_git_to_hg(self):
         t = Translator("git", "hg")
@@ -72,6 +73,8 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "pull", "hg pull -u")
         self.assert_translates(t, "push", "hg push")
         self.assert_translates(t, "diff", "hg diff")
+        self.assert_translates(t, "remote", "hg paths")
+        self.assert_translates(t, "remote -v", "hg paths")
 
     def test_svn_to_hg(self):
         t = Translator("svn", "hg")
