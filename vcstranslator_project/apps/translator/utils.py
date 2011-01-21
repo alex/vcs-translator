@@ -54,10 +54,10 @@ class GitTranslator(BaseTranslator):
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
-        if len(parts) != 1:
-            return
-        if parts[0] == "pull":
+        if parts == ["pull"]:
             return Fetch()
+        elif parts == ["commit"]:
+            return Commit(files=Commit.ALL, push=False)
 
     def translate_commit(self, command):
         if command.files is command.ALL:
