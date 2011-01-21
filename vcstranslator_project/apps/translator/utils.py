@@ -16,6 +16,11 @@ class BaseTranslator(object):
         return meth(command)
 
 class GitTranslator(BaseTranslator):
+    def parse(self, command):
+        parts = command.split()
+        if parts == ["init"]:
+            return Init()
+
     def translate_commit(self, command):
         if command.files is command.ALL:
             s = "git commit -a"
@@ -47,6 +52,9 @@ class HgTranslator(BaseTranslator):
         if command.push:
             s += " && hg push"
         return s
+
+    def translate_init(self, command):
+        return "hg init"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -120,6 +128,9 @@ class TranslationSuccess(TranslationResult):
 
 class Command(object):
     ALL = object()
+
+class Init(Command):
+    pass
 
 class Commit(Command):
     def __init__(self, files, push):

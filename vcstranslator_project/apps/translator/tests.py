@@ -48,6 +48,10 @@ class TranslatorTests(TestCase):
         t = Translator("svn", "hg")
         self.assert_translates(t, "commit", "hg commit && hg push")
 
+    def test_git_to_hg(self):
+        t = Translator("git", "hg")
+        self.assert_translates(t, "init", "hg init")
+
     def test_cant_handle(self):
         t = Translator("svn", "git")
         self.assert_cant_handle(t, "commit some/file")
