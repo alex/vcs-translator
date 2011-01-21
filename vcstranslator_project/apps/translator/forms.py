@@ -29,6 +29,8 @@ class TranslationForm(forms.Form):
         assert self.is_valid()
         data = self.cleaned_data
         command, rest = data["command"].split(" ", 1)
+        if command == data["vcs"]:
+            return data["command"]
         return Translator(command.split()[0], data["vcs"]).translate(rest)
 
 
