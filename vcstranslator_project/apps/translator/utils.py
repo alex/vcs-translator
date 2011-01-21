@@ -34,6 +34,10 @@ class HgTranslator(BaseTranslator):
         if parts[0] == "pull":
             return Fetch()
 
+    def translate_commit(self, command):
+        if command.files is command.ALL:
+            return "hg commit"
+
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
