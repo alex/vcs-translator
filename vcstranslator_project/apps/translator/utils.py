@@ -124,6 +124,9 @@ class SVNTranslator(BaseTranslator):
     def translate_status(self, command):
         return "svn status"
 
+    def translate_push(self, command):
+        raise CantHandle
+
 class Translator(object):
     vcs = SortedDict([
         ("git", GitTranslator),

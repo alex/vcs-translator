@@ -30,6 +30,11 @@ class TranslatorTests(TestCase):
         self.assertFalse(r.success)
         self.assertTrue(r.result.startswith("We can't handle this yet"))
 
+    def assert_cant_handle(self, translator, command):
+        r = translator.translate(command)
+        self.assertFalse(r.success)
+        self.assertEqual(r.result, "This VCS doesn't support this operation")
+
     def test_x_to_x(self):
         t = Translator("svn", "svn")
         self.assert_translates(t, "log", "svn log")
@@ -50,6 +55,7 @@ class TranslatorTests(TestCase):
          self.assert_translates(t, "pull", "svn up")
          self.assert_translates(t, "clone", "svn checkout")
          self.assert_translates(t, "status", "svn status")
+         self.assert_cant_handle(t, "push")
 
     def test_hg_to_git(self):
         t = Translator("hg", "git")
