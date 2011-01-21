@@ -39,6 +39,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "commit", "git commit -a && git push")
         self.assert_translates(t, "checkout", "git clone")
         self.assert_translates(t, "co", "git clone")
+        self.assert_translates(t, "add", "git add")
         self.assert_translates(t, "add file.txt", "git add file.txt")
         self.assert_translates(t, "add some/other/file.txt", "git add some/other/file.txt")
 

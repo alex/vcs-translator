@@ -39,7 +39,10 @@ class GitTranslator(BaseTranslator):
         return "git clone"
 
     def translate_add(self, command):
-        return "git add %s" % " ".join(f.path for f in command.files)
+        cmd = "git add"
+        if command.files:
+            cmd += " %s" % " ".join(f.path for f in command.files)
+        return cmd
 
 class HgTranslator(BaseTranslator):
     def parse(self, command):
@@ -68,8 +71,9 @@ class SVNTranslator(BaseTranslator):
             return Commit(files=Commit.ALL, push=True)
         elif parts in [["checkout"], ["co"]]:
             return Clone()
-        elif parts[0] in "add" and len(parts) == 2:
-            return Add(files=[SomeFile(parts[1])])
+        elif parts[0] in "add" and len(parts) <= 2:
+            files = [SomeFile(f) for f in parts[1:]]
+            return Add(files=files)
 
     def translate_pull(self, command):
         return "svn up"
