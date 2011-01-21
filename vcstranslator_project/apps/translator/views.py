@@ -10,6 +10,7 @@ def home(request):
     results = None
     if form.is_valid():
         results = form.translate()
+        request.session["last_translation"] = form.get_data()
     return render_to_response("translator/home.html", {
         "form": form,
         "results": results,
@@ -23,7 +24,9 @@ def feedback(request):
             messages.success(request, "We got your feedback, thanks!")
             return redirect("home")
     else:
-        form = TranslationFeedbackForm()
+        form = TranslationFeedbackForm(
+            initial=request.session.pop("last_translation", None)
+        )
     return render_to_response("translator/feedback.html", {
         "form": form,
     }, context_instance=RequestContext(request))

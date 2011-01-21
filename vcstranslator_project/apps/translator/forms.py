@@ -17,6 +17,14 @@ class TranslationForm(forms.Form):
             )
         return value
 
+    def get_data(self):
+        assert self.is_valid()
+        return {
+            "source": self.cleaned_data["command"].split()[0],
+            "target": self.cleaned_data["vcs"],
+            "command": self.cleaned_data["command"],
+        }
+
     def translate(self):
         assert self.is_valid()
         data = self.cleaned_data
