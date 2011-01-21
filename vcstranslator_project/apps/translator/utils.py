@@ -4,14 +4,7 @@ from django.utils.datastructures import SortedDict
 class BaseTranslator(object):
     def translate(self, command):
         meth = getattr(self, "translate_%s" % command.__class__.__name__.lower())
-        try:
-            result = meth(command)
-        except CandHandleYet:
-            return TranslationFailure("Can't yet handle this")
-        except CantHandle:
-            return TranslationFailure("This VCS doesn't support this operation")
-        else:
-            return TranslationSuccess(result)
+        return meth(command)
 
 class GitTranslator(BaseTranslator):
     def translate_commit(self, command):
@@ -23,8 +16,10 @@ class HgTranslator(BaseTranslator):
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
-        part, = command.split()
-        if part == "commit":
+        parts = command.split()
+        if len(parts) != 1:
+            return
+        if parts[0] == "commit":
             return Commit(files=Commit.ALL)
 
 class Translator(object):
@@ -40,10 +35,26 @@ class Translator(object):
         self.source = source
         self.target = target
 
-    def translate(self, command):
-        parsed = self.vcs[self.source]().parse(command)
-        return self.vcs[self.target]().translate(parsed)
+    def handle_step(self, step, *args, **kwargs):
+        try:
+            res = step(*args, **kwargs)
+            if res is None:
+                raise CantHandleYet
+        except CandHandleYet:
+            return TranslationFailure("Can't yet handle this"), False
+        except CantHandle:
+            return TranslationFailure("This VCS doesn't support this operation"), False
+        return res, True
 
+
+    def translate(self, command):
+        parsed, cont = self.handle_step(self.vcs[self.source]().parse, command)
+        if not cont:
+            return parsed
+        res, cont = self.handle_step(self.vcs[self.target]().translate, parsed)
+        if cont:
+            res = TranslationSuccess(res)
+        return res
 
 class TranslationResult(object):
     def __init__(self, result):
