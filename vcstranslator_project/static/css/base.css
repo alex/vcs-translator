@@ -16,8 +16,10 @@ body {
     padding-bottom: 15px;
 }
 
-#content h1 {
+#content h1, #content h1 a {
     padding-top: 5px;
+    text-decoration: none;
+    color: black;
 }
 
 #id_command {

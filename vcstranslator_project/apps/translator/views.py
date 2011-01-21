@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
 from translator.forms import TranslationForm, TranslationFeedbackForm
+from translator.models import FailedTranslation
 
 
 def home(request):
@@ -29,4 +30,9 @@ def feedback(request):
         )
     return render_to_response("translator/feedback.html", {
         "form": form,
+    }, context_instance=RequestContext(request))
+
+def help(request):
+    return render_to_response("translator/help.html", {
+        "failures": FailedTranslation.objects.order_by("-count"),
     }, context_instance=RequestContext(request))
