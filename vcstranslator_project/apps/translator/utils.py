@@ -24,6 +24,8 @@ class GitTranslator(BaseTranslator):
             return Pull()
         elif parts == ["clone"]:
             return Clone()
+        elif parts == ["status"]:
+            return Status()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -71,6 +73,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_clone(self, command):
         return "hg clone"
+
+    def translate_status(self, command):
+        return "hg status"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -179,3 +184,6 @@ class Clone(Command):
 class Add(Command):
     def __init__(self, files):
         self.files = files
+
+class Status(Command):
+    pass

@@ -62,6 +62,7 @@ class TranslatorTests(TestCase):
         t = Translator("git", "hg")
         self.assert_translates(t, "init", "hg init")
         self.assert_translates(t, "clone", "hg clone")
+        self.assert_translates(t, "status", "hg status")
 
     def test_cant_handle(self):
         t = Translator("svn", "git")
