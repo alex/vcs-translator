@@ -25,7 +25,7 @@ class TranslatorTests(TestCase):
         self.assertTrue(r.success)
         self.assertEqual(r.result, result)
 
-    def assert_cant_handle(self, translator, command):
+    def assert_cant_handle_yet(self, translator, command):
         r = translator.translate(command)
         self.assertFalse(r.success)
         self.assertTrue(r.result.startswith("We can't handle this yet"))
@@ -72,21 +72,21 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "commit", "hg commit && hg push")
         self.assert_translates(t, "checkout", "hg clone")
 
-    def test_cant_handle(self):
+    def test_cant_handle_yes(self):
         t = Translator("svn", "git")
-        self.assert_cant_handle(t, "commit some/file")
+        self.assert_cant_handle_yet(t, "commit some/file")
         f = FailedTranslation.objects.get()
         self.assertEqual(f.source, "svn")
         self.assertEqual(f.target, "git")
         self.assertEqual(f.command, "commit some/file")
         self.assertEqual(f.count, 1)
 
-        self.assert_cant_handle(t, "commit some/file")
+        self.assert_cant_handle_yet(t, "commit some/file")
         f = FailedTranslation.objects.get()
         self.assertEqual(f.count, 2)
 
         t = Translator("git", "svn")
-        self.assert_cant_handle(t, "commit -a")
+        self.assert_cant_handle_yet(t, "commit -a")
 
         t = Translator("svn", "hg")
-        self.assert_cant_handle(t, "commit -a")
+        self.assert_cant_handle_yet(t, "commit -a")
