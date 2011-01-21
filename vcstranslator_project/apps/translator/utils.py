@@ -64,6 +64,9 @@ class HgTranslator(BaseTranslator):
     def translate_init(self, command):
         return "hg init"
 
+    def translate_clone(self, command):
+        return "hg clone"
+
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
