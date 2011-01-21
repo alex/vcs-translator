@@ -5,8 +5,14 @@ from translator.models import FailedTranslation
 
 
 class BaseTranslator(object):
+    def parse(self, command):
+        pass
+
     def translate(self, command):
-        meth = getattr(self, "translate_%s" % command.__class__.__name__.lower())
+        try:
+            meth = getattr(self, "translate_%s" % command.__class__.__name__.lower())
+        except AttributeError:
+            raise CantHandleYet
         return meth(command)
 
 class GitTranslator(BaseTranslator):
@@ -67,6 +73,9 @@ class Translator(object):
 
 
 class CantHandleYet(Exception):
+    pass
+
+class CantHandle(Exception):
     pass
 
 

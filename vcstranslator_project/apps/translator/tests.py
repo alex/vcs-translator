@@ -46,3 +46,9 @@ class TranslatorTests(TestCase):
         self.assert_cant_handle(t, "commit some/file")
         f = FailedTranslation.objects.get()
         self.assertEqual(f.count, 2)
+
+        t = Translator("git", "svn")
+        self.assert_cant_handle(t, "commit -a")
+
+        t = Translator("svn", "hg")
+        self.assert_cant_handle(t, "commit")
