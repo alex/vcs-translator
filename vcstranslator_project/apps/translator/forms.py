@@ -5,7 +5,7 @@ from translator.utils import Translator
 
 
 class TranslationForm(forms.Form):
-    command = forms.CharField(initial="command...")
+    command = forms.CharField(initial="command (e.g svn commit)...")
     vcs = forms.ChoiceField(choices=[("", "Target VCS")] + zip(Translator.vcs, Translator.vcs))
 
     def clean_command(self):

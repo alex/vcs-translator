@@ -29,26 +29,5 @@
 {% endblock %}
 
 {% block extra_body %}
-    <script type="text/javascript">
-        $(function() {
-            var command_text = "command...";
-            if ($("#id_command").val() == command_text) {
-                $("#id_command").css("color", "gray");
-            }
-            else {
-                $("#id_command").css("color", "black");
-            }
-            $("#id_command").focus(function() {
-                if ($(this).val() == command_text) {
-                    $(this).val("");
-                    $(this).css("color", "black");
-                }
-            }).blur(function() {
-                if ($(this).val() == "") {
-                    $(this).val(command_text);
-                    $(this).css("color", "gray");
-                }
-            });
-        })
-    </script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
 {% endblock %}
