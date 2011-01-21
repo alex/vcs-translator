@@ -28,6 +28,8 @@ class GitTranslator(BaseTranslator):
             return Status()
         elif parts == ["push"]:
             return Push()
+        elif parts == ["diff"]:
+            return Diff()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -56,6 +58,9 @@ class GitTranslator(BaseTranslator):
     def translate_push(self, command):
         return "git push"
 
+    def translate_diff(self, command):
+        return "git diff"
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -65,6 +70,8 @@ class HgTranslator(BaseTranslator):
             return Commit(files=Commit.ALL, push=False)
         elif parts == ["push"]:
             return Push()
+        elif parts == ["diff"]:
+            return Diff()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -89,6 +96,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_pull(self, command):
         return "hg pull -u"
+
+    def translate_diff(self, command):
+        return "hg diff"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -207,4 +217,7 @@ class Add(Command):
         self.files = files
 
 class Status(Command):
+    pass
+
+class Diff(Command):
     pass
