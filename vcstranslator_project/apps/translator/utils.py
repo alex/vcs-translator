@@ -41,7 +41,7 @@ class SVNTranslator(BaseTranslator):
             return
         if parts[0] == "commit":
             return Commit(files=Commit.ALL)
-        elif parts[0] == "checkout":
+        elif parts[0] in ["checkout", "co"]:
             return Clone()
 
 class Translator(object):
