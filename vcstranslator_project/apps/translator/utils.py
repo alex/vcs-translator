@@ -76,6 +76,9 @@ class GitTranslator(BaseTranslator):
             cmd += " -v"
         return cmd
 
+    def translate_status(self, command):
+        return "git status"
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
