@@ -7,7 +7,7 @@ class BaseFeedback(models.Model):
     command = models.TextField()
 
     class Meta:
-        abstract = False
+        abstract = True
 
 class FailedTranslation(BaseFeedback):
     count = models.IntegerField(default=0)
