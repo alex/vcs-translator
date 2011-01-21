@@ -24,6 +24,7 @@
         {% else %}
             <h2>Sorry :(</h2>
             <p>{{ results.result }}</p>
+            <p>If you have a suggestion for how this should be translated, <a href="{% url translation_feedback %}">let us know!</a>
         {% endif %}
     {% endif %}
 {% endblock %}
