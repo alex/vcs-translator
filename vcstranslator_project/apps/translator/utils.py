@@ -77,6 +77,9 @@ class HgTranslator(BaseTranslator):
     def translate_status(self, command):
         return "hg status"
 
+    def translate_pull(self, command):
+        return "hg pull -u"
+
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
