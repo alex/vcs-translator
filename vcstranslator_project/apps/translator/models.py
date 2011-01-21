@@ -10,4 +10,4 @@ class BaseFeedback(models.Model):
         abstract = False
 
 class FailedTranslation(BaseFeedback):
-    pass
+    count = models.IntegerField(default=0)

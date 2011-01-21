@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.utils.datastructures import SortedDict
 
 from translator.models import FailedTranslation
@@ -43,11 +44,12 @@ class Translator(object):
             if res is None:
                 raise CantHandleYet
         except CantHandleYet:
-            FailedTranslation.objects.create(
+            f, _ = FailedTranslation.objects.get_or_create(
                 source=self.source,
                 target=self.target,
                 command=command,
             )
+            FailedTranslation.objects.filter(pk=f.pk).update(count=F("count") + 1)
             return TranslationFailure("We can't handle this yet, we've let the monkeys^W programmers in the back room know."), False
         except CantHandle:
             return TranslationFailure("This VCS doesn't support this operation"), False
