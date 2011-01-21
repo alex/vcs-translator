@@ -40,6 +40,10 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "checkout", "git clone")
         self.assert_translates(t, "co", "git clone")
 
+    def test_git_to_svn(self):
+         t = Translator("git", "svn")
+         self.assert_translates(t, "pull", "svn up")
+
     def test_hg_to_git(self):
         t = Translator("hg", "git")
         self.assert_translates(t, "pull", "git fetch")

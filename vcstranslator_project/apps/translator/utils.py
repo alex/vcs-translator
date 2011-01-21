@@ -20,6 +20,8 @@ class GitTranslator(BaseTranslator):
         parts = command.split()
         if parts == ["init"]:
             return Init()
+        elif parts == ["pull"]:
+            return Pull()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -65,6 +67,9 @@ class SVNTranslator(BaseTranslator):
             return Commit(files=Commit.ALL, push=True)
         elif parts[0] in ["checkout", "co"]:
             return Clone()
+
+    def translate_pull(self, command):
+        return "svn up"
 
 class Translator(object):
     vcs = SortedDict([
@@ -138,6 +143,9 @@ class Commit(Command):
         self.push = push
 
 class Fetch(Command):
+    pass
+
+class Pull(Command):
     pass
 
 class Clone(Command):
