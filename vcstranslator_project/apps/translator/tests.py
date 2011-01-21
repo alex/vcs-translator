@@ -42,6 +42,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "add", "git add")
         self.assert_translates(t, "add file.txt", "git add file.txt")
         self.assert_translates(t, "add some/other/file.txt", "git add some/other/file.txt")
+        self.assert_translates(t, "update", "git pull")
 
     def test_git_to_svn(self):
          t = Translator("git", "svn")
