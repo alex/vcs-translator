@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from translator.forms import TranslationForm
+from translator.models import FailedTranslation
 from translator.utils import Translator
 
 
@@ -24,6 +25,19 @@ class TranslatorTests(TestCase):
         self.assertTrue(r.success)
         self.assertEqual(r.result, result)
 
+    def assert_cant_handle(self, translator, command):
+        r = translator.translate(command)
+        self.assertFalse(r.success)
+        self.assertTrue(r.result.startswith("We can't handle this yet"))
+
     def test_svn_to_git(self):
         t = Translator("svn", "git")
         self.assert_translates(t, "commit", "git commit -a")
+
+    def test_cant_handle(self):
+        t = Translator("svn", "git")
+        self.assert_cant_handle(t, "commit some/file")
+        f = FailedTranslation.objects.get()
+        self.assertEqual(f.source, "svn")
+        self.assertEqual(f.target, "git")
+        self.assertEqual(f.command, "commit some/file")

@@ -1,5 +1,7 @@
 from django.utils.datastructures import SortedDict
 
+from translator.models import FailedTranslation
+
 
 class BaseTranslator(object):
     def translate(self, command):
@@ -35,26 +37,36 @@ class Translator(object):
         self.source = source
         self.target = target
 
-    def handle_step(self, step, *args, **kwargs):
+    def handle_step(self, command, step, *args, **kwargs):
         try:
             res = step(*args, **kwargs)
             if res is None:
                 raise CantHandleYet
-        except CandHandleYet:
-            return TranslationFailure("Can't yet handle this"), False
+        except CantHandleYet:
+            FailedTranslation.objects.create(
+                source=self.source,
+                target=self.target,
+                command=command,
+            )
+            return TranslationFailure("We can't handle this yet, we've let the monkeys^W programmers in the back room know."), False
         except CantHandle:
             return TranslationFailure("This VCS doesn't support this operation"), False
         return res, True
 
 
     def translate(self, command):
-        parsed, cont = self.handle_step(self.vcs[self.source]().parse, command)
+        parsed, cont = self.handle_step(command, self.vcs[self.source]().parse, command)
         if not cont:
             return parsed
-        res, cont = self.handle_step(self.vcs[self.target]().translate, parsed)
+        res, cont = self.handle_step(command, self.vcs[self.target]().translate, parsed)
         if cont:
             res = TranslationSuccess(res)
         return res
+
+
+class CantHandleYet(Exception):
+    pass
+
 
 class TranslationResult(object):
     def __init__(self, result):
