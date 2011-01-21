@@ -88,6 +88,9 @@ class SVNTranslator(BaseTranslator):
     def translate_pull(self, command):
         return "svn up"
 
+    def translate_clone(self, command):
+        return "svn checkout"
+
 class Translator(object):
     vcs = SortedDict([
         ("git", GitTranslator),
