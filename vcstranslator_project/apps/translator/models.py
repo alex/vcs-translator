@@ -11,3 +11,6 @@ class BaseFeedback(models.Model):
 
 class FailedTranslation(BaseFeedback):
     count = models.IntegerField(default=0)
+
+class TranslationFeedback(BaseFeedback):
+    comments = models.TextField()

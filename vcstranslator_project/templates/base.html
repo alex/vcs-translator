@@ -1,56 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>The VCS Translator</title>
-        <style type="text/css">
-            body {
-                background-color: #26393D;
-                font-family: "Trebuchet MS", sans-serif;
-            }
-
-            #content-holder {
-                margin-left: 200px;
-                margin-right: 200px;
-                margin-top: 15%;
-            }
-
-            #content {
-                background: none repeat scroll 0 0 rgba(255, 255, 255, 0.898);
-                outline: 4px solid rgba(255, 255, 255, 0.5);
-                padding-left: 15px;
-                padding-bottom: 15px;
-            }
-
-            #content h1 {
-                padding-top: 5px;
-            }
-
-            #id_command {
-                width: 73%;
-            }
-
-            .code {
-                border: 3px solid #333333;
-                background-color: #CCCCCC;
-                padding: 2px;
-                width: 73%;
-            }
-
-            #footer {
-                margin-left: 200px;
-                margin-right: 200px;
-            }
-
-            #footer p, #footer p a {
-                color: white;
-                text-decoration: none;
-            }
-        </style>
+        <title>{% block title %}The VCS Translator{% endblock %}</title>
+        <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" />
     </head>
     <body>
         <div id="content-holder">
             <div id="content">
                 <h1>The VCS Translator</h1>
+                {% for message in messages %}
+                    <p class="message">{{ message }}</p>
+                {% endfor %}
                 {% block content %}{% endblock %}
             </div>
         </div>

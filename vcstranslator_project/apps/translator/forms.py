@@ -1,5 +1,6 @@
 from django import forms
 
+from translator.models import TranslationFeedback
 from translator.utils import Translator
 
 
@@ -21,3 +22,10 @@ class TranslationForm(forms.Form):
         data = self.cleaned_data
         command, rest = data["command"].split(" ", 1)
         return Translator(command.split()[0], data["vcs"]).translate(rest)
+
+
+class TranslationFeedbackForm(forms.ModelForm):
+    command = forms.CharField()
+
+    class Meta:
+        model = TranslationFeedback

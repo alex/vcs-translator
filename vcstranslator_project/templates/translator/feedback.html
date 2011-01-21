@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{{ block.super }} - Feedback {% endblock %}
+
+{% block content %}
+    <h2>Feedback</h2>
+    <p>Thanks for helping us out.</p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Submit" />
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}
