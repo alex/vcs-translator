@@ -36,7 +36,7 @@ class TranslatorTests(TestCase):
 
     def test_svn_to_git(self):
         t = Translator("svn", "git")
-        self.assert_translates(t, "commit", "git commit -a")
+        self.assert_translates(t, "commit", "git commit -a && git push")
         self.assert_translates(t, "checkout", "git clone")
         self.assert_translates(t, "co", "git clone")
 
@@ -46,7 +46,7 @@ class TranslatorTests(TestCase):
 
     def test_svn_to_hg(self):
         t = Translator("svn", "hg")
-        self.assert_translates(t, "commit", "hg commit")
+        self.assert_translates(t, "commit", "hg commit && hg push")
 
     def test_cant_handle(self):
         t = Translator("svn", "git")

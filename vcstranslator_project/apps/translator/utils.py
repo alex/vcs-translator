@@ -18,7 +18,12 @@ class BaseTranslator(object):
 class GitTranslator(BaseTranslator):
     def translate_commit(self, command):
         if command.files is command.ALL:
-            return "git commit -a"
+            s = "git commit -a"
+        else:
+            return
+        if command.push:
+            s += " && git push"
+        return s
 
     def translate_fetch(self, command):
         return "git fetch"
@@ -36,7 +41,12 @@ class HgTranslator(BaseTranslator):
 
     def translate_commit(self, command):
         if command.files is command.ALL:
-            return "hg commit"
+            s = "hg commit"
+        else:
+            return
+        if command.push:
+            s += " && hg push"
+        return s
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -44,7 +54,7 @@ class SVNTranslator(BaseTranslator):
         if len(parts) != 1:
             return
         if parts[0] == "commit":
-            return Commit(files=Commit.ALL)
+            return Commit(files=Commit.ALL, push=True)
         elif parts[0] in ["checkout", "co"]:
             return Clone()
 
@@ -112,8 +122,9 @@ class Command(object):
     ALL = object()
 
 class Commit(Command):
-    def __init__(self, files):
+    def __init__(self, files, push):
         self.files = files
+        self.push = push
 
 class Fetch(Command):
     pass
