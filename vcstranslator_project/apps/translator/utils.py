@@ -26,6 +26,8 @@ class GitTranslator(BaseTranslator):
             return Clone()
         elif parts == ["status"]:
             return Status()
+        elif parts == ["push"]:
+            return Push()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -51,6 +53,9 @@ class GitTranslator(BaseTranslator):
     def translate_pull(self, command):
         return "git pull"
 
+    def translate_push(self, command):
+        return "git push"
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -58,6 +63,8 @@ class HgTranslator(BaseTranslator):
             return Fetch()
         elif parts == ["commit"]:
             return Commit(files=Commit.ALL, push=False)
+        elif parts == ["push"]:
+            return Push()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -76,6 +83,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_status(self, command):
         return "hg status"
+
+    def translate_push(self, command):
+        return "hg push"
 
     def translate_pull(self, command):
         return "hg pull -u"
@@ -184,6 +194,9 @@ class Fetch(Command):
     pass
 
 class Pull(Command):
+    pass
+
+class Push(Command):
     pass
 
 class Clone(Command):
