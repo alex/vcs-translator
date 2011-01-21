@@ -22,6 +22,8 @@ class GitTranslator(BaseTranslator):
             return Init()
         elif parts == ["pull"]:
             return Pull()
+        elif parts == ["clone"]:
+            return Clone()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
