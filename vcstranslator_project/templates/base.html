@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The VCS Translator</title>
+        <style type="text/css">
+            body {
+                background-color: #26393D;
+                font-family: "Trebuchet MS", sans-serif;
+            }
+
+            #content-holder {
+                margin-left: 200px;
+                margin-right: 200px;
+                margin-top: 15%;
+            }
+
+            #content {
+                background: none repeat scroll 0 0 rgba(255, 255, 255, 0.898);
+                outline: 4px solid rgba(255, 255, 255, 0.5);
+                padding-left: 15px;
+                padding-bottom: 15px;
+            }
+
+            #content h1 {
+                padding-top: 5px;
+            }
+
+            #id_command {
+                width: 73%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content-holder">
+            <div id="content">
+                <h1>The VCS Translator</h1>
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+        {% block extra_body %}{% endblock %}
+    </body>
+</html>

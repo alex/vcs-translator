@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="get" action="">
+        {% for field in form %}
+            {{ field }}
+        {% endfor %}
+        <input type="submit" value="Translate" />
+    </form>
+    {% if form.errors %}
+        <h2>Sorry :(</h2>
+        <p>There were some errors with your submission</p>
+        {{ form.errors }}
+    {% endif %}
+{% endblock %}
+
+{% block extra_body %}
+    <script type="text/javascript">
+        $(function() {
+            var command_text = "command...";
+            if ($("#id_command").val() == command_text) {
+                $("#id_command").css("color", "gray");
+            }
+            else {
+                $("#id_command").css("color", "black");
+            }
+            $("#id_command").focus(function() {
+                if ($(this).val() == command_text) {
+                    $(this).val("");
+                    $(this).css("color", "black");
+                }
+            }).blur(function() {
+                if ($(this).val() == "") {
+                    $(this).val(command_text);
+                    $(this).css("color", "gray");
+                }
+            });
+        })
+    </script>
+{% endblock %}
