@@ -100,6 +100,9 @@ class HgTranslator(BaseTranslator):
     def translate_diff(self, command):
         return "hg diff"
 
+    def translate_revert(self, command):
+        return "hg revert %s --no-backup" % " ".join(f.path for f in command.files)
+
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -109,11 +112,14 @@ class SVNTranslator(BaseTranslator):
             return Clone()
         elif parts in [["up"], ["update"]]:
             return Pull()
-        elif parts[0] in "add" and len(parts) <= 2:
+        elif parts[0] == "add" and len(parts) <= 2:
             files = [SomeFile(f) for f in parts[1:]]
             return Add(files=files)
         elif parts == ["status"]:
             return Status()
+        elif parts[0] == "revert" and len(parts) == 2:
+            files = [SomeFile(parts[1])]
+            return Revert(files=files)
 
     def translate_pull(self, command):
         return "svn up"
@@ -224,3 +230,7 @@ class Status(Command):
 
 class Diff(Command):
     pass
+
+class Revert(Command):
+    def __init__(self, files):
+        self.files = files
