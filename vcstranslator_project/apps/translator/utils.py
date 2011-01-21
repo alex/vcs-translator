@@ -89,12 +89,17 @@ class SVNTranslator(BaseTranslator):
         elif parts[0] in "add" and len(parts) <= 2:
             files = [SomeFile(f) for f in parts[1:]]
             return Add(files=files)
+        elif parts == ["status"]:
+            return Status()
 
     def translate_pull(self, command):
         return "svn up"
 
     def translate_clone(self, command):
         return "svn checkout"
+    
+    def translate_status(self, command):
+        return "svn status"
 
 class Translator(object):
     vcs = SortedDict([
