@@ -20,8 +20,16 @@ class GitTranslator(BaseTranslator):
         if command.files is command.ALL:
             return "git commit -a"
 
+    def translate_fetch(self, command):
+        return "git fetch"
+
 class HgTranslator(BaseTranslator):
-    pass
+    def parse(self, command):
+        parts = command.split()
+        if len(parts) != 1:
+            return
+        if parts[0] == "pull":
+            return Fetch()
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -95,3 +103,6 @@ class Command(object):
 class Commit(Command):
     def __init__(self, files):
         self.files = files
+
+class Fetch(Command):
+    pass
