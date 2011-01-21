@@ -35,6 +35,11 @@
                 padding: 2px;
                 width: 73%;
             }
+
+            #footer p, #footer p a {
+                color: white;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body>
@@ -43,6 +48,12 @@
                 <h1>The VCS Translator</h1>
                 {% block content %}{% endblock %}
             </div>
+        </div>
+        <div id="footer">
+            <p>
+                Built by <a href="http://alexgaynor.net">Alex Gaynor</a>.
+                Copyright Alex Gaynor 2011.
+            </p>
         </div>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
         {% block extra_body %}{% endblock %}
