@@ -7,9 +7,9 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
+ADMINS = [
+    ("Alex Gaynor", "alex.gaynor@gmail.com"),
+]
 
 MANAGERS = ADMINS
 
