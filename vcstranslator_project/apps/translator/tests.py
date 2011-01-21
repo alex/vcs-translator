@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from translator.forms import TranslationForm
+from translator.utils import Translator
 
 
 class TranslationFormTests(TestCase):
@@ -15,3 +16,14 @@ class TranslationFormTests(TestCase):
 
         f = TranslationForm({"command": "svn commit", "vcs": "git"})
         self.assertTrue(f.is_valid())
+
+
+class TranslatorTests(TestCase):
+    def assert_translates(self, translator, command, result):
+        r = translator.translate(command)
+        self.assertTrue(r.success)
+        self.assertEqual(r.result, result)
+
+    def test_svn_to_git(self):
+        t = Translator("svn", "git")
+        self.assert_translates(t, "commit", "commit -a")

@@ -11,4 +11,5 @@ def home(request):
         results = form.translate()
     return render_to_response("translator/home.html", {
         "form": form,
+        "results": results,
     }, context_instance=RequestContext(request))

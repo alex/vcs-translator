@@ -12,6 +12,19 @@
         <p>There were some errors with your submission</p>
         {{ form.errors }}
     {% endif %}
+    {% if results %}
+        {% if results.success %}
+            <h2>Great Success!</h2>
+            <div class="code">
+                <code>
+                    $ {{ results.result }}
+                </code>
+            </code>
+        {% else %}
+            <h2>Sorry :(</h2>
+            <p>{{ results.result }}</p>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block extra_body %}
