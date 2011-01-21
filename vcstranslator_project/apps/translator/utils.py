@@ -71,6 +71,8 @@ class Translator(object):
 
 
     def translate(self, command):
+        if self.source == self.target:
+            return TranslationSuccess("%s %s" % (self.target, command))
         parsed, cont = self.handle_step(command, self.vcs[self.source]().parse, command)
         if not cont:
             return parsed

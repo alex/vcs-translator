@@ -30,6 +30,10 @@ class TranslatorTests(TestCase):
         self.assertFalse(r.success)
         self.assertTrue(r.result.startswith("We can't handle this yet"))
 
+    def test_x_to_x(self):
+        t = Translator("svn", "svn")
+        self.assert_translates(t, "log", "svn log")
+
     def test_svn_to_git(self):
         t = Translator("svn", "git")
         self.assert_translates(t, "commit", "git commit -a")
