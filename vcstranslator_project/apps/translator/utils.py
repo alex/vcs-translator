@@ -23,6 +23,9 @@ class GitTranslator(BaseTranslator):
     def translate_fetch(self, command):
         return "git fetch"
 
+    def translate_clone(self, command):
+        return "git clone"
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -38,6 +41,8 @@ class SVNTranslator(BaseTranslator):
             return
         if parts[0] == "commit":
             return Commit(files=Commit.ALL)
+        elif parts[0] == "checkout":
+            return Clone()
 
 class Translator(object):
     vcs = SortedDict([
@@ -107,4 +112,7 @@ class Commit(Command):
         self.files = files
 
 class Fetch(Command):
+    pass
+
+class Clone(Command):
     pass
