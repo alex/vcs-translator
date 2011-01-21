@@ -37,6 +37,7 @@ class TranslatorTests(TestCase):
     def test_svn_to_git(self):
         t = Translator("svn", "git")
         self.assert_translates(t, "commit", "git commit -a && git push")
+        self.assert_translates(t, "ci", "git commit -a && git push")
         self.assert_translates(t, "checkout", "git clone")
         self.assert_translates(t, "co", "git clone")
         self.assert_translates(t, "add", "git add")

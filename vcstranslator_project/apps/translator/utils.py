@@ -83,7 +83,7 @@ class HgTranslator(BaseTranslator):
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
-        if parts == ["commit"]:
+        if parts in [["commit"], ["ci"]]:
             return Commit(files=Commit.ALL, push=True)
         elif parts in [["checkout"], ["co"]]:
             return Clone()
@@ -100,7 +100,7 @@ class SVNTranslator(BaseTranslator):
 
     def translate_clone(self, command):
         return "svn checkout"
-    
+
     def translate_status(self, command):
         return "svn status"
 
