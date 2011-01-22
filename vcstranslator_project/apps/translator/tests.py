@@ -88,7 +88,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "update", "hg pull -u")
         self.assert_translates(t, "diff", "hg diff")
 
-    def hg_to_svn(self):
+    def test_hg_to_svn(self):
         t = Translator("hg", "svn")
         self.assert_translates(t, "diff", "svn diff")
 
@@ -99,6 +99,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "status", "bzr status")
         self.assert_translates(t, "pull", "bzr pull")
         self.assert_translates(t, "push", "bzr push")
+        self.assert_translates(t, "diff", "bzr diff")
 
     def test_bzr_to_git(self):
         t = Translator("bzr", "git")
@@ -106,7 +107,15 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "commit", "git commit -a")
         self.assert_translates(t, "push", "git push")
 
-    def test_cant_handle_yes(self):
+    def test_hg_to_bzr(self):
+        t = Translator("hg", "bzr")
+        self.assert_translates(t, "init", "bzr init")
+        self.assert_translates(t, "clone", "bzr branch")
+        self.assert_translates(t, "status", "bzr status")
+        self.assert_translates(t, "push", "bzr push")
+        self.assert_translates(t, "diff", "bzr diff")
+
+    def test_cant_handle_yet(self):
         t = Translator("svn", "git")
         self.assert_cant_handle_yet(t, "commit some/file")
         f = FailedTranslation.objects.get()

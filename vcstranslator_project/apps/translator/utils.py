@@ -40,6 +40,9 @@ class BzrTranslator(BaseTranslator):
     def translate_push(self, command):
         return "bzr push"
 
+    def translate_diff(self, command):
+        return "bzr diff"
+
 
 class GitTranslator(BaseTranslator):
     def parse(self, command):
@@ -127,6 +130,12 @@ class HgTranslator(BaseTranslator):
             return Remote(verbose=True)
         elif parts == ["record"]:
             return Add(interactive=True, commit=True)
+        elif parts == ["init"]:
+            return Init()
+        elif parts == ["clone"]:
+            return Clone()
+        elif parts == ["status"]:
+            return Status()
 
     def translate_commit(self, command):
         if command.files is command.ALL:
