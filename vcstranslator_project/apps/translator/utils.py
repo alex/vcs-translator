@@ -30,6 +30,8 @@ class GitTranslator(BaseTranslator):
             return Push()
         elif parts == ["diff"]:
             return Diff()
+        elif parts == ["commit", "-a"]:
+            return Commit(files=Commit.ALL, push=False)
         elif parts[0] == "remote":
             parts = parts[1:]
             if parts == ["-v"]:

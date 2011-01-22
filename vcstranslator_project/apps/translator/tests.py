@@ -78,6 +78,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "diff", "hg diff")
         self.assert_translates(t, "remote", "hg paths")
         self.assert_translates(t, "remote -v", "hg paths")
+        self.assert_translates(t, "commit -a", "hg commit")
 
     def test_svn_to_hg(self):
         t = Translator("svn", "hg")
