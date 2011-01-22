@@ -156,6 +156,9 @@ class SVNTranslator(BaseTranslator):
     def translate_push(self, command):
         raise CantHandle
 
+    def translate_diff(self, command):
+        return "svn diff"
+
 class Translator(object):
     vcs = SortedDict([
         ("git", GitTranslator),
