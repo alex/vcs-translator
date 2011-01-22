@@ -47,7 +47,9 @@ class BzrTranslator(BaseTranslator):
 class GitTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
-        if parts == ["init"]:
+        if not parts:
+            return Help()
+        elif parts == ["init"]:
             return Init()
         elif parts == ["pull"]:
             return Pull()
@@ -122,10 +124,15 @@ class GitTranslator(BaseTranslator):
             return
         return "git log --all"
 
+    def translate_help(self, command):
+        return "git"
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
-        if parts == ["pull"]:
+        if not parts:
+            return Help()
+        elif parts == ["pull"]:
             return Fetch()
         elif parts == ["commit"]:
             return Commit(files=Commit.ALL, push=False)
@@ -178,6 +185,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_remote(self, command):
         return "hg paths"
+
+    def translate_help(self, command):
+        return "hg"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
@@ -333,3 +343,6 @@ class Log(Command):
     def __init__(self, branches, files):
         self.branches = branches
         self.files = files
+
+class Help(Command):
+    pass
