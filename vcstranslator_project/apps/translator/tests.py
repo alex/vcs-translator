@@ -66,6 +66,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "push", "git push")
         self.assert_translates(t, "diff", "git diff")
         self.assert_translates(t, "paths", "git remote -v")
+        self.assert_translates(t, "record", "git add -p && git commit")
 
     def test_git_to_hg(self):
         t = Translator("git", "hg")

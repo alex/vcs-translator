@@ -57,8 +57,13 @@ class GitTranslator(BaseTranslator):
 
     def translate_add(self, command):
         cmd = "git add"
+        if command.interactive:
+            # Prefer '-p' to '-i' as it is much easier
+            cmd += " -p"
         if command.files:
             cmd += " %s" % " ".join(f.path for f in command.files)
+        if command.commit:
+            cmd += " && git commit"
         return cmd
 
     def translate_pull(self, command):
@@ -92,6 +97,8 @@ class HgTranslator(BaseTranslator):
             return Diff()
         elif parts == ["paths"]:
             return Remote(verbose=True)
+        elif parts == ["record"]:
+            return Add(interactive=True, commit=True)
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -250,8 +257,10 @@ class Clone(Command):
     pass
 
 class Add(Command):
-    def __init__(self, files):
+    def __init__(self, files=None, interactive=False, commit=False):
         self.files = files
+        self.interactive = interactive
+        self.commit = commit
 
 class Status(Command):
     pass
