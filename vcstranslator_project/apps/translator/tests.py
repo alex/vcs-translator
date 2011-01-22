@@ -82,6 +82,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "commit", "hg commit && hg push")
         self.assert_translates(t, "checkout", "hg clone")
         self.assert_translates(t, "revert some/file.txt", "hg revert some/file.txt --no-backup")
+        self.assert_translates(t, "update", "hg pull -u")
 
     def test_cant_handle_yes(self):
         t = Translator("svn", "git")
