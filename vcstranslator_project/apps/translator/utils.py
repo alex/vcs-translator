@@ -143,6 +143,8 @@ class SVNTranslator(BaseTranslator):
         elif parts[0] == "revert" and len(parts) == 2:
             files = [SomeFile(parts[1])]
             return Revert(files=files)
+        elif parts == ["diff"]:
+            return Diff()
 
     def translate_pull(self, command):
         return "svn up"

@@ -84,6 +84,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "checkout", "hg clone")
         self.assert_translates(t, "revert some/file.txt", "hg revert some/file.txt --no-backup")
         self.assert_translates(t, "update", "hg pull -u")
+        self.assert_translates(t, "diff", "hg diff")
 
     def hg_to_svn(self):
         t = Translator("hg", "svn")
