@@ -61,6 +61,8 @@ class GitTranslator(BaseTranslator):
             return Diff()
         elif parts == ["commit", "-a"]:
             return Commit(files=Commit.ALL, push=False)
+        elif parts == ["log"]:
+            return Log(branches=Log.CURRENT, files=Log.ALL)
         elif parts[0] == "remote":
             parts = parts[1:]
             if parts == ["-v"]:
@@ -212,6 +214,11 @@ class SVNTranslator(BaseTranslator):
     def translate_diff(self, command):
         return "svn diff"
 
+    def translate_log(self, command):
+        if command.branches is not command.CURRENT or command.files is not command.ALL:
+            return
+        return "svn log"
+
 class Translator(object):
     vcs = SortedDict([
         ("bzr", BzrTranslator),
@@ -280,6 +287,7 @@ class SomeFile(object):
 
 class Command(object):
     ALL = object()
+    CURRENT = object()
 
 class Init(Command):
     pass

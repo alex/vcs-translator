@@ -57,6 +57,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "clone", "svn checkout")
         self.assert_translates(t, "status", "svn status")
         self.assert_translates(t, "diff", "svn diff")
+        self.assert_translates(t, "log", "svn log")
         self.assert_cant_handle(t, "push")
 
     def test_hg_to_git(self):
