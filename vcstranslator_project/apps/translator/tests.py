@@ -11,9 +11,9 @@ class TranslationFormTests(TestCase):
         self.assertFalse(f.is_valid())
         self.assertEqual(f.errors["command"], ["This field is required."])
 
-        f = TranslationForm({"command": "bzr commit", "vcs": "git"})
+        f = TranslationForm({"command": "arch commit", "vcs": "git"})
         self.assertFalse(f.is_valid())
-        self.assertEqual(f.errors["command"], ["Command must start with a valid VCS (git, hg, svn)."])
+        self.assertEqual(f.errors["command"], ["Command must start with a valid VCS (bzr, git, hg, svn)."])
 
         f = TranslationForm({"command": "svn commit", "vcs": "git"})
         self.assertTrue(f.is_valid())
@@ -52,12 +52,12 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "status", "git status")
 
     def test_git_to_svn(self):
-         t = Translator("git", "svn")
-         self.assert_translates(t, "pull", "svn up")
-         self.assert_translates(t, "clone", "svn checkout")
-         self.assert_translates(t, "status", "svn status")
-         self.assert_translates(t, "diff", "svn diff")
-         self.assert_cant_handle(t, "push")
+        t = Translator("git", "svn")
+        self.assert_translates(t, "pull", "svn up")
+        self.assert_translates(t, "clone", "svn checkout")
+        self.assert_translates(t, "status", "svn status")
+        self.assert_translates(t, "diff", "svn diff")
+        self.assert_cant_handle(t, "push")
 
     def test_hg_to_git(self):
         t = Translator("hg", "git")
@@ -91,6 +91,20 @@ class TranslatorTests(TestCase):
     def hg_to_svn(self):
         t = Translator("hg", "svn")
         self.assert_translates(t, "diff", "svn diff")
+
+    def test_git_to_bzr(self):
+        t = Translator("git", "bzr")
+        self.assert_translates(t, "init", "bzr init")
+        self.assert_translates(t, "clone", "bzr branch")
+        self.assert_translates(t, "status", "bzr status")
+        self.assert_translates(t, "pull", "bzr pull")
+        self.assert_translates(t, "push", "bzr push")
+
+    def test_bzr_to_git(self):
+        t = Translator("bzr", "git")
+        self.assert_translates(t, "pull", "git fetch")
+        self.assert_translates(t, "commit", "git commit -a")
+        self.assert_translates(t, "push", "git push")
 
     def test_cant_handle_yes(self):
         t = Translator("svn", "git")

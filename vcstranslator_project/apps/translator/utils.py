@@ -15,6 +15,32 @@ class BaseTranslator(object):
             raise CantHandleYet
         return meth(command)
 
+class BzrTranslator(BaseTranslator):
+    def parse(self, command):
+        parts = command.split()
+        if parts == ["pull"]:
+            return Fetch()
+        elif parts == ["commit"]:
+            return Commit(files=Commit.ALL, push=False)
+        elif parts == ["push"]:
+            return Push()
+
+    def translate_init(self, command):
+        return "bzr init"
+
+    def translate_clone(self, command):
+        return "bzr branch"
+
+    def translate_status(self, command):
+        return "bzr status"
+
+    def translate_pull(self, command):
+        return "bzr pull"
+
+    def translate_push(self, command):
+        return "bzr push"
+
+
 class GitTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -172,6 +198,7 @@ class SVNTranslator(BaseTranslator):
 
 class Translator(object):
     vcs = SortedDict([
+        ("bzr", BzrTranslator),
         ("git", GitTranslator),
         ("hg", HgTranslator),
         ("svn", SVNTranslator),
