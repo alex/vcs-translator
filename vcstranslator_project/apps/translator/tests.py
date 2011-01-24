@@ -51,6 +51,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "update", "git pull")
         self.assert_translates(t, "status", "git status")
         self.assert_translates(t, "revert file.txt", "git checkout file.txt")
+        self.assert_cant_handle(t, "")
 
     def test_git_to_svn(self):
         t = Translator("git", "svn")
@@ -93,6 +94,7 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "revert some/file.txt", "hg revert some/file.txt --no-backup")
         self.assert_translates(t, "update", "hg pull -u")
         self.assert_translates(t, "diff", "hg diff")
+        self.assert_cant_handle(t, "")
 
     def test_hg_to_svn(self):
         t = Translator("hg", "svn")
@@ -120,6 +122,10 @@ class TranslatorTests(TestCase):
         self.assert_translates(t, "status", "bzr status")
         self.assert_translates(t, "push", "bzr push")
         self.assert_translates(t, "diff", "bzr diff")
+
+    def test_svn_to_bzr(self):
+        t = Translator("svn", "bzr")
+        self.assert_cant_handle(t, "")
 
     def test_cant_handle_yet(self):
         t = Translator("svn", "git")

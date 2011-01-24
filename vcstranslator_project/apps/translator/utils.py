@@ -43,6 +43,10 @@ class BzrTranslator(BaseTranslator):
     def translate_diff(self, command):
         return "bzr diff"
 
+    def translate_help(self, command):
+        if command.useless:
+            raise CantHandle
+
 
 class GitTranslator(BaseTranslator):
     def parse(self, command):
@@ -127,6 +131,8 @@ class GitTranslator(BaseTranslator):
         return "git log --all"
 
     def translate_help(self, command):
+        if command.useless:
+            raise CantHandle
         return "git"
 
     def translate_revert(self, command):
@@ -194,6 +200,8 @@ class HgTranslator(BaseTranslator):
         return "hg paths"
 
     def translate_help(self, command):
+        if command.useless:
+            raise CantHandle
         return "hg"
 
     def translate_fetch(self, command):
@@ -202,6 +210,8 @@ class HgTranslator(BaseTranslator):
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
+        if not parts:
+            return Help(useless=True)
         if parts in [["commit"], ["ci"]]:
             return Commit(files=Commit.ALL, push=True)
         elif parts in [["checkout"], ["co"]]:
@@ -355,4 +365,5 @@ class Log(Command):
         self.files = files
 
 class Help(Command):
-    pass
+    def __init__(self, useless=False):
+        self.useless = useless
