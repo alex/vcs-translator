@@ -1,0 +1,4 @@
+vcs-translator was created by Alex Gaynor.  Thanks to the following people for
+contributing:
+
+ * Jamey Owens
