@@ -53,6 +53,8 @@ class GitTranslator(BaseTranslator):
             return Init()
         elif parts == ["pull"]:
             return Pull()
+        elif parts == ["fetch"]:
+            return Fetch()
         elif parts == ["clone"]:
             return Clone()
         elif parts == ["status"]:
@@ -127,6 +129,9 @@ class GitTranslator(BaseTranslator):
     def translate_help(self, command):
         return "git"
 
+    def translate_revert(self, command):
+        return "git checkout %s" % " ".join(f.path for f in command.files)
+
 class HgTranslator(BaseTranslator):
     def parse(self, command):
         parts = command.split()
@@ -152,6 +157,8 @@ class HgTranslator(BaseTranslator):
             return Status()
         elif parts == ["log"]:
             return Log(branches=Log.ALL, files=Log.ALL)
+        elif parts[0] == "revert" and len(parts) == 2:
+            return Revert(files=[SomeFile(parts[1])])
 
     def translate_commit(self, command):
         if command.files is command.ALL:
@@ -188,6 +195,9 @@ class HgTranslator(BaseTranslator):
 
     def translate_help(self, command):
         return "hg"
+
+    def translate_fetch(self, command):
+        return "hg pull"
 
 class SVNTranslator(BaseTranslator):
     def parse(self, command):
